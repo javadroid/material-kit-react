@@ -9,35 +9,42 @@ import { useNProgress } from 'src/hooks/use-nprogress';
 import { createTheme } from 'src/theme';
 import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getData } from 'src/service/Api';
 import { useAuth } from 'src/hooks/useAuth';
-
+import { useRouter } from 'next/navigation';
 const clientSideEmotionCache = createEmotionCache();
 
 const SplashScreen = () => null;
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
+const router = useRouter();
   useNProgress();
+  const [load,setload]= useState(false)
   const auth1 = useAuth()
   const getLayout = Component.getLayout ?? ((page) => page);
 
   const theme = createTheme();
   useEffect(() => {
+    
     getData("faculty", auth1?.setfaculty)
     getData("department", auth1?.setdepartment)
     getData("course", auth1?.setcourse)
     getData("venue", auth1?.setvenue)
-
+    
     const getall = async () => {
       const sud = JSON.parse(await localStorage.getItem("userData"))
       if (!sud && !auth1.userData) {
-        // window.location.href = window.location.host + "/auth/login"
+        router.push('/auth/login');
+        setload(true)
+      }else{
+        setload(true)
       }
     }
     getall()
+
+    
   }, [])
 
   return (
@@ -59,7 +66,7 @@ const App = (props) => {
              
             </AuthConsumer> */}
              {
-                 !true
+                  !load
                   ? <SplashScreen />
                   : getLayout(<Component {...pageProps} />)
               }
