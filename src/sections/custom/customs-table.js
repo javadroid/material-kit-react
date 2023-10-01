@@ -42,7 +42,7 @@ export const CustomsTable = (props) => {
                   />
                 </TableCell>
                 {
-                  headers.map((h)=><TableCell> {h}</TableCell>)
+                  headers.map((h)=><TableCell key={h}> {h}</TableCell>)
                 }
               
               </TableRow>
@@ -64,7 +64,7 @@ export const CustomsTable = (props) => {
                       />
                     </TableCell>
                     {
-                  header2.map((h)=><TableCell> {custom[h]}</TableCell>)
+                  header2.map((h)=><TableCell key={custom[h]}> {custom[h]}</TableCell>)
                 }
                   
                   </TableRow>
