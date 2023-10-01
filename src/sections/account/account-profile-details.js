@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -10,6 +10,8 @@ import {
   TextField,
   Unstable_Grid2 as Grid
 } from '@mui/material';
+import { useAuth } from 'src/hooks/useAuth';
+import { deletData } from 'src/service/Api';
 
 const states = [
   {
@@ -30,16 +32,18 @@ const states = [
   }
 ];
 
-export const AccountProfileDetails = () => {
-  const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'los-angeles',
-    country: 'USA'
-  });
+export const AccountProfileDetails = ({data,handleUpdate}) => {
 
+  
+  const auth=useAuth()
+  const [user,setUser]=useState(auth.userData)
+  const [values, setValues] = useState(data||auth.userData);
+
+  useEffect(() => {
+    setValues(data||auth.userData)
+    console.log({data,k:auth.userData})
+  }, [data||auth?.userData])
+  
   const handleChange = useCallback(
     (event) => {
       setValues((prevState) => ({
@@ -49,10 +53,13 @@ export const AccountProfileDetails = () => {
     },
     []
   );
-
+  const handleDelete = () => {
+    // deletData("users",values?.id,handleCloseModal,setReload)
+}
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+
     },
     []
   );
@@ -81,11 +88,11 @@ export const AccountProfileDetails = () => {
                 <TextField
                   fullWidth
                   helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
+                  label="Full name"
+                  name="fullname"
                   onChange={handleChange}
                   required
-                  value={values.firstName}
+                  value={values?.fullname}
                 />
               </Grid>
               <Grid
@@ -94,72 +101,64 @@ export const AccountProfileDetails = () => {
               >
                 <TextField
                   fullWidth
-                  label="Last name"
-                  name="lastName"
+                  label="Matric number"
+                  name="matric"
                   onChange={handleChange}
                   required
-                  value={values.lastName}
+                  value={values?.matric}
                 />
               </Grid>
+          
               <Grid
                 xs={12}
                 md={6}
               >
                 <TextField
                   fullWidth
-                  label="Email Address"
-                  name="email"
-                  onChange={handleChange}
-                  required
-                  value={values.email}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  onChange={handleChange}
-                  type="number"
-                  value={values.phone}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Country"
-                  name="country"
-                  onChange={handleChange}
-                  required
-                  value={values.country}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Select State"
-                  name="state"
+                  label="Department"
+                  name="depart"
                   onChange={handleChange}
                   required
                   select
                   SelectProps={{ native: true }}
-                  value={values.state}
+                  value={values?.depart}
                 >
-                  {states.map((option) => (
                     <option
-                      key={option.value}
-                      value={option.value}
+                      key={""}
+                      value={""}
                     >
-                      {option.label}
+                      {""}
+                    </option>
+                  {auth.departmentAll.map((option) => (
+                    <option
+                      key={option.department}
+                      value={option.department}
+                    >
+                      {option.department}
+                    </option>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid
+                xs={12}
+                md={6}
+              >
+                <TextField
+                  fullWidth
+                  label="Level"
+                  name="level"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={values?.level}
+                >
+                  {['','100', '200', '300', '400', '500','600'].map((option) => (
+                    <option
+                      key={option}
+                      value={option}
+                    >
+                      {option}
                     </option>
                   ))}
                 </TextField>
@@ -168,11 +167,21 @@ export const AccountProfileDetails = () => {
           </Box>
         </CardContent>
         <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+
+        <CardActions  style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }} >
+                    {values?.id ? (
+
+                      <Button color='error'  onClick={handleDelete} variant="contained">
+                        Delete
+                      </Button>
+
+                    ):<div></div>}
+
+<Button onClick={()=>handleUpdate(values)} variant="contained">
             Save details
           </Button>
-        </CardActions>
+                  </CardActions>
+        
       </Card>
     </form>
   );

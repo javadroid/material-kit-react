@@ -1,4 +1,4 @@
-## [Material Kit - React](https://material-kit-react.devias.io/) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=%F0%9F%9A%A8Devias%20Freebie%20Alert%20-%20An%20awesome%20ready-to-use%20register%20page%20made%20with%20%23material%20%23react%0D%0Ahttps%3A%2F%2Fdevias.io%20%23createreactapp%20%23devias%20%23material%20%23freebie%20%40devias-io)
+## [Material Kit - React](https://material-kit-react.devias.io/) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=%F0%9F%9A%A8Javadroid%20Freebie%20Alert%20-%20An%20awesome%20ready-to-use%20register%20page%20made%20with%20%23material%20%23react%0D%0Ahttps%3A%2F%2Fdevias.io%20%23createreactapp%20%23devias%20%23material%20%23freebie%20%40devias-io)
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -13,7 +13,7 @@
 
 - [Dashboard Page](https://material-kit-react.devias.io)
 - [Companies Page](https://material-kit-react.devias.io/companies)
-- [Customers Page](https://material-kit-react.devias.io/customers)
+- [customs Page](https://material-kit-react.devias.io/customs)
 - [Account Page](https://material-kit-react.devias.io/account)
 - [Settings Page](https://material-kit-react.devias.io/settings)
 - [Login Page](https://material-kit-react.devias.io/auth/login)
@@ -21,7 +21,7 @@
 
 ## Free Figma Community File
 
-- [Duplicate File](https://www.figma.com/community/file/1039837897183395483/Devias-Dashboard-Design-Library-Kit)
+- [Duplicate File](https://www.figma.com/community/file/1039837897183395483/Javadroid-Dashboard-Design-Library-Kit)
 
 ## Upgrade to PRO Version
 
@@ -41,7 +41,7 @@ to save more time and design efforts :)
 ## Quick start
 
 - [Download from Github](https://github.com/devias-io/material-kit-react/archive/master.zip)
-  or [Download from Devias](https://devias.io/products/material-kit-react) or clone the
+  or [Download from Javadroid](https://devias.io/products/material-kit-react) or clone the
   repo: `git clone https://github.com/devias-io/material-kit-react.git`
 
 - Make sure your Node.js and npm versions are up to date for `React 18`
@@ -83,7 +83,7 @@ material-kit-react
 		├── _document.js
 		├── account.js
 		├── companies.js
-		├── customers.js
+		├── customs.js
 		├── index.js
 		├── products.js
 		└── settings.js

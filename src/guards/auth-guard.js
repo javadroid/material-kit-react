@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useAuthContext } from 'src/contexts/auth-context';
+import { useAuth } from 'src/hooks/useAuth';
+import { getData } from 'src/service/Api';
 
 export const AuthGuard = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated } = useAuthContext();
+  const auth = useAuth();
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
 
@@ -19,27 +20,34 @@ export const AuthGuard = (props) => {
       if (!router.isReady) {
         return;
       }
-
+      getData("faculty", auth?.setfaculty)
+      getData("department", auth?.setdepartment)
+      getData("course", auth?.setcourse)
       // Prevent from calling twice in development mode with React.StrictMode enabled
       if (ignore.current) {
         return;
       }
-
+console.log({first:auth.userData})
       ignore.current = true;
 
-      if (!isAuthenticated) {
-        console.log('Not authenticated, redirecting');
-        router
-          .replace({
-            pathname: '/auth/login',
-            query: router.asPath !== '/' ? { continueUrl: router.asPath } : undefined
-          })
-          .catch(console.error);
-      } else {
-        setChecked(true);
-      }
+      setTimeout(()=>{
+        if (!auth.userData) {
+          console.log('Not authenticated, redirecting');
+          setChecked(true);
+          // router
+          //   .replace({
+          //     pathname: '/auth/login',
+          //     query: router.asPath !== '/' ? { continueUrl: router.asPath } : undefined
+          //   })
+          //   .catch(console.error);
+        } else {
+          
+          setChecked(true);
+        }
+      },500)
+     
     },
-    [router.isReady]
+    [router.isReady,auth.userData]
   );
 
   if (!checked) {

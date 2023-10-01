@@ -22,8 +22,8 @@ const LayoutContainer = styled('div')({
   flexDirection: 'column',
   width: '100%'
 });
-
-export const Layout = withAuthGuard((props) => {
+// withAuthGuard
+export const Layout = ((props) => {
   const { children } = props;
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);

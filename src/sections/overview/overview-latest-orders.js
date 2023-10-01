@@ -39,7 +39,7 @@ export const OverviewLatestOrders = (props) => {
                   Order
                 </TableCell>
                 <TableCell>
-                  Customer
+                  custom
                 </TableCell>
                 <TableCell sortDirection="desc">
                   Date
@@ -62,7 +62,7 @@ export const OverviewLatestOrders = (props) => {
                       {order.ref}
                     </TableCell>
                     <TableCell>
-                      {order.customer.name}
+                      {order.custom.name}
                     </TableCell>
                     <TableCell>
                       {createdAt}

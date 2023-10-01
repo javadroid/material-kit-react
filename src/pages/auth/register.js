@@ -3,30 +3,45 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
-import { useAuth } from 'src/hooks/use-auth';
+import { Autocomplete, Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import { signup } from 'src/service/Api';
+import { useAuth } from 'src/hooks/useAuth';
+
 
 const Page = () => {
   const router = useRouter();
-  const auth = useAuth();
+  const auth = useAuth()
   const formik = useFormik({
     initialValues: {
-      email: '',
+      matric: '',
       name: '',
+      user: '',
       password: '',
+      department: '',
+      level: '',
       submit: null
     },
     validationSchema: Yup.object({
-      email: Yup
+      matric: Yup
         .string()
-        .email('Must be a valid email')
+
         .max(255)
-        .required('Email is required'),
+        .required('Matric is required'),
       name: Yup
         .string()
         .max(255)
         .required('Name is required'),
+      user: Yup
+        .string()
+        .max(255)
+        .required('User type is required'),
+      department: Yup
+        .string()
+        .max(255)
+        .required('Department is required'),
+
       password: Yup
         .string()
         .max(255)
@@ -34,8 +49,10 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.email, values.name, values.password);
-        router.push('/');
+        await signup(values.matric, values.password, values.department, values.level, values.name, values.user, router, helpers, auth);
+
+       
+        // router.push('/');
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -48,7 +65,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Register | Devias Kit
+          Register
         </title>
       </Head>
       <Box
@@ -97,26 +114,98 @@ const Page = () => {
             >
               <Stack spacing={3}>
                 <TextField
+                  fullWidth
+                  name="user"
+                  onChange={formik.handleChange}
+                  select
+                  helperText={formik.touched.user && formik.errors.user}
+                  error={!!(formik.touched.user && formik.errors.user)}
+                  SelectProps={{ native: true }}
+                  value={formik.values.user}
+                >
+                  {[null, 'Student', 'Lecturer','Admin'].map((option) => (
+                    <option
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+
+
+                <TextField
+                  error={!!(formik.touched.matric && formik.errors.matric)}
+                  fullWidth
+                  helperText={formik.touched.matric && formik.errors.matric}
+                  label="Matric / Staff id"
+                  name="matric"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="matric"
+                  value={formik.values.matric}
+                />
+                <TextField
                   error={!!(formik.touched.name && formik.errors.name)}
                   fullWidth
                   helperText={formik.touched.name && formik.errors.name}
-                  label="Name"
+                  label="Full name"
                   name="name"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.name}
                 />
+
                 <TextField
-                  error={!!(formik.touched.email && formik.errors.email)}
+                  id="combo-box-demo"
                   fullWidth
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
-                  name="email"
+                  name="department"
+                   label="Department"
+                  select
+                  SelectProps={{ native: true }}
+                  helperText={formik.touched.department && formik.errors.department}
+                  error={!!(formik.touched.department && formik.errors.department)}
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="email"
-                  value={formik.values.email}
-                />
+                  value={formik.values.department}
+                >
+                  {['',...auth.departmentAll.map((dept)=>dept["department"])].map((option) => (
+                    <option
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+
+                {
+                  formik.values.user === 'Student' ? <TextField
+                    id="combo-box-demo"
+                    select
+                    SelectProps={{ native: true }}
+                    fullWidth
+                    name="level"
+                    label="Level"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                 
+
+                    value={formik.values.level}
+                  >
+                    {['','100', '200', '300', '400', '500','600'].map((option) => (
+                      <option
+                        key={option}
+                        value={option}
+                      >
+                        {option}
+                      </option>
+                    ))}
+                  </TextField> : <>
+                  </>
+                }
+
+
                 <TextField
                   error={!!(formik.touched.password && formik.errors.password)}
                   fullWidth
