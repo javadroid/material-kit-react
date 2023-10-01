@@ -34,7 +34,7 @@ const App = (props) => {
     const getall = async () => {
       const sud = JSON.parse(await localStorage.getItem("userData"))
       if (!sud && !auth1.userData) {
-        window.location.href = window.location.host + "/auth/login"
+        // window.location.href = window.location.host + "/auth/login"
       }
     }
     getall()
@@ -52,18 +52,16 @@ const App = (props) => {
         />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
+        
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AuthConsumer>
-              {
-                (auth) => auth.isLoading
+            {
+                 !true
                   ? <SplashScreen />
                   : getLayout(<Component {...pageProps} />)
               }
-            </AuthConsumer>
           </ThemeProvider>
-        </AuthProvider>
+        
       </LocalizationProvider>
     </CacheProvider>
   );
