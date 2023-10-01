@@ -52,7 +52,7 @@ const App = (props) => {
         />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
+        <>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             {/* <AuthConsumer>
@@ -64,7 +64,7 @@ const App = (props) => {
                   : getLayout(<Component {...pageProps} />)
               }
           </ThemeProvider>
-        </AuthProvider>
+        </>
       </LocalizationProvider>
     </CacheProvider>
   );
