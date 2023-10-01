@@ -5,7 +5,7 @@ import { useState } from 'react';
 export const CustomsSearch = ({name,data,setData,keys,main,auth}) => {
 const [dep,setdep]=useState()
 const [fac,setfac]=useState()
-console.log(auth.facultyAll)
+
   return (
     <Card style={{display:'flex',flexDirection:"row",justifyContent:"space-between"}} sx={{ p: 2 , }}>
     <OutlinedInput
@@ -70,7 +70,7 @@ console.log(auth.facultyAll)
         setdep(w)
         setData(main.filter((dd)=>dd['faculty'].includes(fac)&&dd['department'].includes(w)))}}
       id="combo-box-demo"
-      options={["",...auth.departmentAll.map(obj => obj['department']).filter((dd)=>dd['faculty']?.includes(fac))]}
+      options={["",...auth?.departmentAll.map(obj => obj['department']).filter((dd)=>dd['faculty']?.includes(fac))]}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Department" />}
     />
