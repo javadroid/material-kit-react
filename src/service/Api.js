@@ -132,7 +132,7 @@ export const login = async (matric, password, router, helpers, auth) => {
               user: docfound.data()
             })
             auth.setAuth(docfound.data())
-            window.location.href=window.location.host
+            // window.location.href=window.location.host
             router.push('/');
           } else {
             helpers.setStatus({ success: false });
