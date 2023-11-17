@@ -56,6 +56,9 @@ const handleUpdate=(dt)=>{
   updateData("users",dt, handleCloseModal,setReload)
 
 }
+const handleDelete = (dt) => {
+  deletData("users",dt.id,handleCloseModal,setReload)
+}
 
   return (
     <>
@@ -133,7 +136,7 @@ const handleUpdate=(dt)=>{
               <Grid
                 
               >
-                <AccountProfileDetails data={aUser} handleUpdate={handleUpdate} />
+                <AccountProfileDetails handleDelete={handleDelete} data={aUser} handleUpdate={handleUpdate} />
               </Grid>
             </Grid>
           </div>

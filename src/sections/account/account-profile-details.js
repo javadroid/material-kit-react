@@ -32,7 +32,7 @@ const states = [
   }
 ];
 
-export const AccountProfileDetails = ({data,handleUpdate}) => {
+export const AccountProfileDetails = ({data,handleUpdate,handleDelete}) => {
 
   
   const auth=useAuth()
@@ -53,9 +53,9 @@ export const AccountProfileDetails = ({data,handleUpdate}) => {
     },
     []
   );
-  const handleDelete = () => {
-    // deletData("users",values?.id,handleCloseModal,setReload)
-}
+//   const handleDelete = () => {
+//     // deletData("users",values?.id,handleCloseModal,setReload)
+// }
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
@@ -171,7 +171,7 @@ export const AccountProfileDetails = ({data,handleUpdate}) => {
         <CardActions  style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }} >
                     {values?.id ? (
 
-                      <Button color='error'  onClick={handleDelete} variant="contained">
+                      <Button color='error'  onClick={()=>handleDelete(values)} variant="contained">
                         Delete
                       </Button>
 

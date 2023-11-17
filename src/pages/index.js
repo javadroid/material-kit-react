@@ -35,7 +35,7 @@ const Page = () => {
             lg={3}
           >
             <Overview
-              name={"Faulty"}
+              name={"Faculty"}
               positive
               sx={{ height: '100%' }}
               value={auth.facultyAll.length}

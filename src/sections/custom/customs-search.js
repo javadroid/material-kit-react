@@ -5,6 +5,7 @@ import { useState } from 'react';
 export const CustomsSearch = ({name,data,setData,keys,main,auth}) => {
 const [dep,setdep]=useState()
 const [fac,setfac]=useState()
+// console.log(data)
 
   return (
     <Card style={{display:'flex',flexDirection:"row",justifyContent:"space-between"}} sx={{ p: 2 , }}>
@@ -37,6 +38,7 @@ const [fac,setfac]=useState()
       value={fac}
       onChange={(e,w)=>{
         setfac(w)
+
           setData(main.filter((dd)=>dd['faculty']?.includes(w))) 
         
       }
@@ -49,13 +51,14 @@ const [fac,setfac]=useState()
 }
     {keys==="code"&&(
      <>
-      <Autocomplete
+       <Autocomplete
       disablePortal
       id="combo-box-demo"
       value={fac}
       onChange={(e,w)=>{
         setfac(w)
-          setData(main.filter((dd)=>dd['faculty']?.includes(w))) 
+        console.log(w,main.filter((dd)=>dd['falcuty']?.includes(w)))
+          setData(main.filter((dd)=>dd['falcuty']?.includes(w))) 
         
       }
       }
@@ -63,14 +66,15 @@ const [fac,setfac]=useState()
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Faculty" />}
     />
+    
       <Autocomplete
       disablePortal
       value={dep}
       onChange={(e,w)=>{
         setdep(w)
-        setData(main.filter((dd)=>dd['faculty'].includes(fac)&&dd['department'].includes(w)))}}
+        setData(main.filter((dd)=>dd['falcuty'].includes(fac)&&dd['department'].includes(w)))}}
       id="combo-box-demo"
-      options={["",...auth?.departmentAll.map(obj => obj['department']).filter((dd)=>dd['faculty']?.includes(fac))]}
+      options={["",...auth?.departmentAll.filter((dd)=>dd['faculty']?.includes(fac)).map(obj => obj['department'])]}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Department" />}
     />
@@ -79,8 +83,9 @@ const [fac,setfac]=useState()
       id="combo-box-demo"
       
       onChange={(e,w)=>{
-        if(dep!==""){
-          setData(main.filter((dd)=>dd['faculty'].includes(fac)&&dd['department'].includes(dep)&&dd['level'].includes(w)))
+        console.log(dep,fac)
+        if(dep!==""&&dep){
+          setData(main.filter((dd)=>dd['falcuty'].includes(fac)&&dd['department'].includes(dep)&&dd['level'].includes(w)))
         }else{
           setData(main.filter((dd)=>dd['level'].includes(w))) 
         }
@@ -89,6 +94,21 @@ const [fac,setfac]=useState()
       options={["", "100", "200", "300", "400", "500", "600"]}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Level" />}
+    />
+
+<Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      
+      onChange={(e,w)=>{
+        
+          setData(data.filter((dd)=>dd['semester']?.includes(w))) 
+        
+      }
+      }
+      options={["", 1,2]}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Semester" />}
     />
      </>
     )}

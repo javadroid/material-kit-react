@@ -37,9 +37,7 @@ export const CustomsTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
-                  <Checkbox
-                    
-                  />
+                 
                 </TableCell>
                 {
                   headers.map((h)=><TableCell key={h}> {h}</TableCell>)

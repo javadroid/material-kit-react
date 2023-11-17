@@ -35,17 +35,37 @@ const Page = () => {
   const [open, setOpen] = useState(true);
   const [adata, setAData] = useState();
   const [openModal, setOpenModal] = useState(false);
-  const [values, setValues] = useState();
+  const [openModal1, setOpenModal1] = useState(false);
+  let [values, setValues] = useState();
   const handleOpenModal = (data) => {
+   
     setAData(data)
-    setValues(data)
+     setValues(data)
     setOpenModal(true)
-    console.log(data)
+    console.log(values)
   };
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal1 = (data) => {
+   
+    setAData(data)
+     setValues(data)
+    setOpenModal1(true)
+    console.log(values)
+  };
+  // useEffect(() => {
+  //  if(openModal===false){
+  //   setValues({})
+  //  }
+  // }, [openModal])
+  
+  const handleCloseModal = () => {
+    // setValues({})
+    // values={}
+    setOpenModal(false)
+    setOpenModal1(false)
+  };
 
   useEffect(() => {
-    setValues()
+    setValues({})
     const getdatas = async () => {
       const datas = getData("faculty", auth?.setfaculty)
       setData(await datas)
@@ -119,7 +139,7 @@ if(adata?.id){
               </Stack>
               <div>
               <Button
-                    onClick={()=>handleOpenModal(null)}
+                    onClick={()=>handleOpenModal1(null)}
                       startIcon={(
                         <SvgIcon fontSize="small">
                           <PlusIcon />
@@ -180,7 +200,44 @@ if(adata?.id){
           </div>
         </Box>
       </Modal>
+      <Modal
+        keepMounted
+        open={openModal1}
+        onClose={handleCloseModal}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <Grid container>
+              <Grid>
+                <TextField
+                  fullWidth
+                  label="Faculty"
+                  name="name"
+                  onChange={handleChange}
+                  required
+                  
+                />
 
+<CardActions  style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }} >
+                    {adata?.id ? (
+
+                      <Button color='error'  onClick={handleDelete} variant="contained">
+                        Delete
+                      </Button>
+
+                    ):<div></div>}
+
+                    <Button   onClick={handleUpdate} variant="contained">
+                      Save details
+                    </Button>
+                  </CardActions>
+              </Grid>
+            </Grid>
+          </div>
+        </Box>
+      </Modal>
 
     </>
   );

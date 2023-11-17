@@ -32,6 +32,7 @@ const Page = () => {
   const [open, setOpen] = useState(true);
   const [adata, setAData] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const [openModal1, setOpenModal1] = useState(false);
   let [values, setValues] = useState();
   const handleOpenModal = (data) => {
     setAData(data)
@@ -40,7 +41,15 @@ const Page = () => {
     setOpenModal(true)
     console.log(data)
   };
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal1 = (data) => {
+    setAData(data)
+    values=null
+    setValues(data)
+    setOpenModal1(true)
+    console.log(data)
+  };
+  const handleCloseModal = () => {setOpenModal(false)
+    setOpenModal1(false)};
 
   useEffect(() => {
     setValues()
@@ -118,7 +127,7 @@ const Page = () => {
               </Stack>
               <div>
                 <Button
-                  onClick={() => handleOpenModal(null)}
+                  onClick={() => handleOpenModal1(null)}
                   startIcon={(
                     <SvgIcon fontSize="small">
                       <PlusIcon />
@@ -134,9 +143,9 @@ const Page = () => {
             
             <CustomsTable
               handleOpenModal={handleOpenModal}
-              items={data || []}
-              headers={["name", "code", "unit", "department", "level", "no of students"]}
-              header2={["name", "code", "unit", "department", "level", "student"]}
+              items={data.reverse() || []}
+              headers={["name", "code", "unit", "department","status", "semester","level", "no of students"]}
+              header2={["name", "code", "unit", "department", "status","semester","level", "student"]}
 
             />
           </Stack>
@@ -171,7 +180,7 @@ const Page = () => {
                   name="code"
                   onChange={handleChange}
                   required
-                  value={values?.code}
+                  value={adata?.id?values?.code:null}
                 />
                 <TextField
                   fullWidth
@@ -179,7 +188,7 @@ const Page = () => {
                   name="name"
                   onChange={handleChange}
                   required
-                  value={values?.name}
+                  value={adata?.id?values?.name:null}
                 />
                 <TextField
                   fullWidth
@@ -188,7 +197,7 @@ const Page = () => {
                   type='number'
                   onChange={handleChange}
                   required
-                  value={values?.unit}
+                  value={adata?.id?values?.unit:null}
                 />
                 <TextField
                   fullWidth
@@ -197,7 +206,7 @@ const Page = () => {
                   type='number'
                   onChange={handleChange}
                   required
-                  value={values?.course}
+                  value={adata?.id?values?.course:null}
                 />
                 <TextField
                   fullWidth
@@ -217,7 +226,7 @@ const Page = () => {
                   required
                   select
                   SelectProps={{ native: true }}
-                  // value={values?.faculty}
+                  value={adata?.id?values?.faculty:null}
                 >
                   <option
 
@@ -238,13 +247,53 @@ const Page = () => {
                 </TextField>
                 <TextField
                   fullWidth
+                  label="status"
+                  name="status"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={adata?.id?values?.status:null}
+                >
+                  {["", "Core", "Elective"].map((option) => (
+                    <option
+
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
+                  label="Semester"
+                  name="semester"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={adata?.id?values?.semester:null}
+                >
+                  {["", 1, 2].map((option) => (
+                    <option
+
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
                   label="Level"
                   name="level"
                   onChange={handleChange}
                   required
                   select
                   SelectProps={{ native: true }}
-                  value={values?.level}
+                  value={adata?.id?values?.level:null}
                 >
                   {["", 100, 200, 300, 400, 500, 600].map((option) => (
                     <option
@@ -276,7 +325,179 @@ const Page = () => {
         </Box>
       </Modal>
 
+      <Modal
+        keepMounted
+        open={openModal1}
+        onClose={handleCloseModal}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <Grid
+              container
 
+            >
+              {/* <Grid
+                xs={12}
+                md={6}
+                lg={4}
+              >
+                <AccountProfile />
+              </Grid> */}
+              <Grid
+
+              >
+                <TextField
+                  fullWidth
+                  label="Code"
+                  name="code"
+                  onChange={handleChange}
+                  required
+                  // value={adata?.id?values?.code:null}
+                />
+                <TextField
+                  fullWidth
+                  label="Name"
+                  name="name"
+                  onChange={handleChange}
+                  required
+                  // value={adata?.id?values?.name:null}
+                />
+                <TextField
+                  fullWidth
+                  label="Unit"
+                  name="unit"
+                  type='number'
+                  onChange={handleChange}
+                  required
+                  // value={adata?.id?values?.unit:null}
+                />
+                <TextField
+                  fullWidth
+                  label="Nunber of students"
+                  name="student"
+                  type='number'
+                  onChange={handleChange}
+                  required
+                  // value={adata?.id?values?.course:null}
+                />
+                <TextField
+                  fullWidth
+                  label="Department"
+                  name="eman"
+                  onChange={(e) => {
+                    const aas = JSON.parse(e.target.value)
+                      const vs={...values}
+                      vs["falcuty"] = aas?.faculty
+                      vs["department"] = aas?.department
+                      setValues((prevState) => ({
+                        ...prevState,
+                        ...vs
+                      }))
+                    // handleChange(e)
+                  }}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  // value={adata?.id?values?.faculty:null}
+                >
+                  <option
+
+                    key={"option.department"}
+                    value={"[]"}
+                  >
+                    {""}
+                  </option>
+                  {auth.departmentAll?.map((option) => (
+                    <option
+
+                      key={option.department}
+                      value={JSON.stringify(option)}
+                    >
+                      {option.department}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
+                  label="status"
+                  name="status"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  // value={adata?.id?values?.status:null}
+                >
+                  {["", "Core", "Elective"].map((option) => (
+                    <option
+
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
+                  label="Semester"
+                  name="semester"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  // value={adata?.id?values?.semester:null}
+                >
+                  {["", 1, 2].map((option) => (
+                    <option
+
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
+                  label="Level"
+                  name="level"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  // value={adata?.id?values?.level:null}
+                >
+                  {["", 100, 200, 300, 400, 500, 600].map((option) => (
+                    <option
+
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </TextField>
+
+                <CardActions  style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }} >
+                    {adata?.id ? (
+
+                      <Button color='error'  onClick={handleDelete} variant="contained">
+                        Delete
+                      </Button>
+
+                    ):<div></div>}
+
+                    <Button   onClick={handleUpdate} variant="contained">
+                      Save details
+                    </Button>
+                  </CardActions>
+              </Grid>
+            </Grid>
+          </div>
+        </Box>
+      </Modal>
     </>
   );
 };

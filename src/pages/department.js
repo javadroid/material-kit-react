@@ -35,17 +35,29 @@ const Page = () => {
   const [open, setOpen] = useState(true);
   const [adata, setAData] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const [openModal1, setOpenModal1] = useState(false);
   const [values, setValues] = useState();
   const handleOpenModal = (data) => {
     setAData(data)
     setValues(data)
+   
     setOpenModal(true)
     console.log(data)
   };
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal1 = (data) => {
+    setAData(data)
+    setValues(data)
+   
+    setOpenModal1(true)
+    console.log(data)
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    setOpenModal1(false)
+  };
 
   useEffect(() => {
-    setValues()
+   
     const getdatas = async () => {
       const datas = getData("department", auth?.setdepartment)
       setData(await datas)
@@ -119,7 +131,7 @@ const Page = () => {
               </Stack>
               <div>
                 <Button
-                  onClick={() => handleOpenModal(null)}
+                  onClick={() => handleOpenModal1(null)}
                   startIcon={(
                     <SvgIcon fontSize="small">
                       <PlusIcon />
@@ -175,6 +187,7 @@ const Page = () => {
                   select
                   SelectProps={{ native: true }}
                   value={values?.faculty}
+                  
                 >
                   <option
                     
@@ -221,6 +234,85 @@ const Page = () => {
         </Box>
       </Modal>
 
+      <Modal
+        keepMounted
+        open={openModal1}
+        onClose={handleCloseModal}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <Grid
+              container
+
+            >
+              {/* <Grid
+                xs={12}
+                md={6}
+                lg={4}
+              >
+                <AccountProfile />
+              </Grid> */}
+              <Grid
+
+              >
+
+                <TextField
+                  fullWidth
+                  label="Faculty"
+                  name="faculty"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  // value={values?.faculty}
+                  
+                >
+                  <option
+                    
+                    key={""}
+                    value={""}
+                  >
+                    {""}
+                  </option>
+                  {auth.facultyAll.map((option) => (
+                    <option
+                    
+                      key={option.name}
+                      value={option.name}
+                    >
+                      {option.name}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
+                  label="Department"
+                  name="department"
+                  onChange={handleChange}
+                  required
+                  // value={values?.department}
+                />
+
+<CardActions  style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }} >
+                    {adata?.id ? (
+
+                      <Button color='error'  onClick={handleDelete} variant="contained">
+                        Delete
+                      </Button>
+
+                    ):<div></div>}
+
+                    <Button   onClick={handleUpdate} variant="contained">
+                      Save details
+                    </Button>
+                  </CardActions>
+              </Grid>
+            </Grid>
+          </div>
+        </Box>
+      </Modal>
 
     </>
   );

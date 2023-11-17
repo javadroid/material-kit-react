@@ -51,7 +51,7 @@ const router = useRouter();
     <CacheProvider value={emotionCache}>
       <Head>
         <title>
-          Generic
+          Genetic
         </title>
         <meta
           name="viewport"

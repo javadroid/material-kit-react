@@ -35,6 +35,7 @@ const Page = () => {
   const [open, setOpen] = useState(true);
   const [adata, setAData] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const [openModal1, setOpenModal1] = useState(false);
   const [values, setValues] = useState();
   const handleOpenModal = (data) => {
     setAData(data)
@@ -42,8 +43,14 @@ const Page = () => {
     setOpenModal(true)
     console.log(data)
   };
+  const handleOpenModal1 = (data) => {
+    setAData(data)
+    setValues(data)
+    setOpenModal1(true)
+    console.log(data)
+  };
   const handleCloseModal = () => setOpenModal(false);
-
+  const handleCloseModal1 = () => setOpenModal1(false);
   useEffect(() => {
     setValues()
     const getdatas = async () => {
@@ -120,7 +127,7 @@ const Page = () => {
               </Stack>
               <div>
                 <Button
-                  onClick={() => handleOpenModal(null)}
+                  onClick={() => handleOpenModal1(null)}
                   startIcon={(
                     <SvgIcon fontSize="small">
                       <PlusIcon />
@@ -242,7 +249,104 @@ const Page = () => {
         </Box>
       </Modal>
 
+      <Modal
+        keepMounted
+        open={openModal1}
+        onClose={handleCloseModal1}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <Grid
+              container
 
+            >
+              {/* <Grid
+                xs={12}
+                md={6}
+                lg={4}
+              >
+                <AccountProfile />
+              </Grid> */}
+              <Grid
+
+              >
+
+                <TextField
+                  fullWidth
+                  label="Department"
+                  name="department"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  // value={values?.department}
+                >
+                  <option
+
+                    key={""}
+                    value={""}
+                  >
+                    {""}
+                  </option>
+                  {auth.departmentAll.map((option) => (
+                    <option
+
+                      key={option.department}
+                      value={option.department}
+                    >
+                      {option.department}
+                    </option>
+                  ))}
+                </TextField>
+                <TextField
+                  fullWidth
+                  label="Venue"
+                  name="venue"
+                  onChange={handleChange}
+                  required
+                  // value={values?.venue}
+                />
+                <TextField
+                  fullWidth
+                  label="Code"
+                  name="code"
+                  onChange={handleChange}
+                  required
+                  // value={values?.code}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Capacity"
+                  name="capacity"
+                  type='number'
+                  onChange={handleChange}
+                  required
+                  // value={values?.capacity}
+                />
+
+                
+                  <CardActions  style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }} >
+                    {adata?.id ? (
+
+                      <Button color='error'  onClick={handleDelete} variant="contained">
+                        Delete
+                      </Button>
+
+                    ):<div></div>}
+
+                    <Button   onClick={handleUpdate} variant="contained">
+                      Save details
+                    </Button>
+                  </CardActions>
+                
+              </Grid>
+            </Grid>
+          </div>
+        </Box>
+      </Modal>
     </>
   );
 };

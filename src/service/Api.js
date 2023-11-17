@@ -178,6 +178,7 @@ export const addData = async(name,data,  handleCloseModal,setReload)=>{
 }
 
 export const deletData = async(name,id,handleCloseModal,setReload)=>{
+  console.log(name,id)
   const iduui = Math.floor(Math.random() * 10000) + 148 + Date.now()
   await deleteDoc(doc(db, name+'/' + id));
   handleCloseModal()
