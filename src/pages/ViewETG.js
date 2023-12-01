@@ -16,6 +16,7 @@ export default function ViewETG() {
   const [userData, setuserData] = useState(auth.userData)
   const [loading, setloading] = useState(true)
   const [fac, setfac] = useState()
+  const sud = JSON.parse( localStorage.getItem("userData"))
 
   useEffect(() => {
     // grtExam()
@@ -47,7 +48,7 @@ export default function ViewETG() {
     if (weekINDEX > 0)
       setweekINDEX(weekINDEX - 1)
   }
-  if(userData?.type==="Admin"){
+  if(sud?.type==="Admin"){
     return (
       <>
         <Backdrop
