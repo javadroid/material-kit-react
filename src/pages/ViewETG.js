@@ -179,7 +179,7 @@ export default function ViewETG() {
                           <div style={{ display: "flex", flexDirection: "column", }}>
                             {
                               examDays.map((day, dayIndex) => (
-                                <div style={{ height: 170, display: "flex", alignItems: "center" }}>
+                                <div key={dayIndex} style={{ height: 170, display: "flex", alignItems: "center" }}>
   
                                   <div style={{ width: 150, background: '#f2f2f2', textAlign: "center" }}>
                                     {day}
