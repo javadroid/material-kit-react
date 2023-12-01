@@ -159,8 +159,12 @@ return dataAll
 }
 
 export const updateData = async(name,data,  handleCloseModal,setReload)=>{
- 
-// Set the "capital" field of the city 'DC'
+ if(name="TimeTable"){
+  await updateDoc(doc(db,name+'/' + "1701391053015"), 
+  data
+);
+ }else{
+  // Set the "capital" field of the city 'DC'
 console.log({name,data})
 await updateDoc(doc(db,name+'/' + data.id), 
   data
@@ -168,6 +172,8 @@ await updateDoc(doc(db,name+'/' + data.id),
 const iduui = Math.floor(Math.random() * 10000) + 148 + Date.now()
 setReload(iduui)
 handleCloseModal()
+ }
+
 }
 
 export const addData = async(name,data,  handleCloseModal,setReload)=>{

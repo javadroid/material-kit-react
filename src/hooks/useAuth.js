@@ -7,6 +7,7 @@ export const useAuth = () => {
   const [departmentAll, setDepartmentAll] = useState([]);
   const [courseAll, setcourseAll] = useState([]);
   const [venueAll, setvenueAll] = useState([]);
+  const [examWeeks, setexamWeeks] = useState([]);
 
   useEffect(() => {
     const getall=async()=>{
@@ -16,8 +17,9 @@ export const useAuth = () => {
       const sca=JSON.parse(await localStorage.getItem("courseAll"))
       const sda=JSON.parse(await localStorage.getItem("departmentAll"))
       const sva=JSON.parse(await localStorage.getItem("venueAll"))
+      const exw=JSON.parse(await localStorage.getItem("examWeeksAll"))
 
-      if(sud||sua||sfa||sda||sca||sva){
+      if(sud||sua||sfa||sda||sca||sva||exw){
         console.log({sca,sda})
     setUserData(sud);
     setUserAll(sua);
@@ -25,6 +27,7 @@ export const useAuth = () => {
     setDepartmentAll(sda)
     setcourseAll(sca)
     setvenueAll(sva)
+    setexamWeeks(exw)
       }
 
 
@@ -64,6 +67,11 @@ export const useAuth = () => {
     setvenueAll(data);
     localStorage.setItem("venueAll",JSON.stringify(data))
   }, []);
+
+  const setexamWeeksAll = useCallback((data) => {
+    setexamWeeks(data);
+    localStorage.setItem("examWeeksAll",JSON.stringify(data))
+  }, []);
   return {
     clearAuth,
     userData,
@@ -77,6 +85,8 @@ export const useAuth = () => {
     facultyAll,
     courseAll,
     setvenue,
-    venueAll
+    venueAll,
+    setexamWeeksAll,
+    examWeeks
   };
 };

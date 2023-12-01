@@ -19,6 +19,24 @@ export const items = [
       </SvgIcon>
     )
   },
+  {
+    title: 'View Timetable',
+    path: '/ViewETG',
+    icon: (
+      <SvgIcon fontSize="small">
+        <CogIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Preference',
+    path: '/settings',
+    icon: (
+      <SvgIcon fontSize="small">
+        <CogIcon />
+      </SvgIcon>
+    )
+  },
  
   {
     title: 'Faculty',
@@ -83,15 +101,7 @@ export const items = [
       </SvgIcon>
     )
   },
-  {
-    title: 'Preference',
-    path: '/settings',
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
-      </SvgIcon>
-    )
-  },
+  
   // {
   //   title: 'Login',
   //   path: '/auth/login',
