@@ -13,8 +13,10 @@ export default function ViewETG() {
   const [weekINDEX, setweekINDEX] = useState(0)
   const [dep, setdep] = useState()
   const [level, setlevel] = useState()
+  const [userData, setuserData] = useState(auth.userData)
   const [loading, setloading] = useState(true)
   const [fac, setfac] = useState()
+const sud = JSON.parse( localStorage.getItem("userData"))
 
   useEffect(() => {
     // grtExam()
@@ -23,6 +25,7 @@ export default function ViewETG() {
       const datas = await getData("TimeTable", auth?.setexamWeeksAll)
       setexamWeeks(await JSON.parse(datas[datas.length - 1].examWeeks))
       setMainWeek(await JSON.parse(datas[datas.length - 1].examWeeks))
+      setuserData(auth.userData)
       setloading(false);
       console.log("first,", JSON.parse(datas[datas.length - 1].examWeeks))
     }
@@ -45,178 +48,314 @@ export default function ViewETG() {
     if (weekINDEX > 0)
       setweekINDEX(weekINDEX - 1)
   }
+  if(sud?.type==="Admin"){
+    return (
+
+      <>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
   
-
-  return (
-    <>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <DashboardLayout>
-
-        {!examWeeks || examWeeks.length === 0 ? (
-          <>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
-
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                value={fac}
-                onChange={(e, w) => {
-                  setfac(w)
-
-                }
-                }
-                options={["", ...auth?.facultyAll?.map(obj => obj['name'])]}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Faculty" />}
-              />
-
-              <Autocomplete
-                disablePortal
-                value={dep}
-                onChange={(e, w) => {
-                  setdep(w)
-                 
-                }}
-                id="combo-box-demo"
-                options={["", ...auth?.departmentAll.filter((dd) => dd['faculty']?.includes(fac)).map(obj => obj['department'])]}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Department" />}
-              />
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-
-                onChange={(e, w) => {
-                  console.log(dep, fac)
-                  setlevel(w)
-                }
-                }
-                options={["", "100", "200", "300", "400", "500", "600"]}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Level" />}
-              />
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
-
-                <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
-                  <span onClick={() => preWeek(examWeeks.length)}>{"<<prev"}</span>
-                  <h4 style={{}}>Week {0}</h4>
-                  <span onClick={() => nextWeek(examWeeks.length)}>{"next>>"}</span>
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <DashboardLayout>
+  
+          {!examWeeks || examWeeks.length === 0 ? (
+            <>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
+  
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  value={fac}
+                  onChange={(e, w) => {
+                    setfac(w)
+  
+                  }
+                  }
+                  options={["", ...auth?.facultyAll?.map(obj => obj['name'])]}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Faculty" />}
+                />
+  
+                <Autocomplete
+                  disablePortal
+                  value={dep}
+                  onChange={(e, w) => {
+                    setdep(w)
+                   
+                  }}
+                  id="combo-box-demo"
+                  options={["", ...auth?.departmentAll.filter((dd) => dd['faculty']?.includes(fac)).map(obj => obj['department'])]}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Department" />}
+                />
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+  
+                  onChange={(e, w) => {
+                    console.log(dep, fac)
+                    setlevel(w)
+                  }
+                  }
+                  options={["", "100", "200", "300", "400", "500", "600"]}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Level" />}
+                />
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
+  
+                  <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
+                    <span onClick={() => preWeek(examWeeks.length)}>{"<<prev"}</span>
+                    <h4 style={{}}>Week {0}</h4>
+                    <span onClick={() => nextWeek(examWeeks.length)}>{"next>>"}</span>
+                  </div>
                 </div>
+                {/* <Button onClick={()=>{}} variant="contained">{"Save"}</Button> */}
               </div>
-              {/* <Button onClick={()=>{}} variant="contained">{"Save"}</Button> */}
-            </div>
-            <div>No Time Table Generated</div>
-          </>
-
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {examWeeks?.map((week, weekIndex) => (
-
-              <>
-
-                {
-                  weekIndex === weekINDEX && (
-                    <>
-                      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
-
-                        <Autocomplete
-                          disablePortal
-                          id="combo-box-demo"
-                          value={fac}
-                          onChange={(e, w) => {
-                            setfac(w)
-                          }
-                          }
-                          options={["", ...auth?.facultyAll?.map(obj => obj['name'])]}
-                          sx={{ width: 300 }}
-                          renderInput={(params) => <TextField {...params} label="Faculty" />}
-                        />
-
-                        <Autocomplete
-                          disablePortal
-                          value={dep}
-                          onChange={(e, w) => {
-                            setdep(w)
-                            // setlevel(w)
-
-                          }}
-                          id="combo-box-demo"
-                          options={["", ...auth?.departmentAll.filter((dd) => dd['faculty']?.includes(fac)).map(obj => obj['department'])]}
-                          sx={{ width: 300 }}
-                          renderInput={(params) => <TextField {...params} label="Department" />}
-                        />
-                        <Autocomplete
-                          disablePortal
-                          id="combo-box-demo"
-
-                          onChange={(e, w) => {
-                            console.log(dep, fac)
-                            setlevel(w)
-                          }
-                          }
-                          options={["", "100", "200", "300", "400", "500", "600"]}
-                          sx={{ width: 300 }}
-                          renderInput={(params) => <TextField {...params} label="Level" />}
-                        />
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
-
-                          <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
-                            <span onClick={() => preWeek(examWeeks.length)}>{"<<prev"}</span>
-                            <h4 style={{}}>Week {weekIndex + 1}/{examWeeks.length}</h4>
-                            <span onClick={() => nextWeek(examWeeks.length)}>{"next>>"}</span>
+              <div>No Time Table Generated</div>
+            </>
+  
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {examWeeks?.map((week, weekIndex) => (
+  
+                <>
+  
+                  {
+                    weekIndex === weekINDEX && (
+                      <>
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
+  
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            value={fac}
+                            onChange={(e, w) => {
+                              setfac(w)
+                            }
+                            }
+                            options={["", ...auth?.facultyAll?.map(obj => obj['name'])]}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Faculty" />}
+                          />
+  
+                          <Autocomplete
+                            disablePortal
+                            value={dep}
+                            onChange={(e, w) => {
+                              setdep(w)
+                              // setlevel(w)
+  
+                            }}
+                            id="combo-box-demo"
+                            options={["", ...auth?.departmentAll.filter((dd) => dd['faculty']?.includes(fac)).map(obj => obj['department'])]}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Department" />}
+                          />
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+  
+                            onChange={(e, w) => {
+                              console.log(dep, fac)
+                              setlevel(w)
+                            }
+                            }
+                            options={["", "100", "200", "300", "400", "500", "600"]}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Level" />}
+                          />
+                          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
+  
+                            <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
+                              <span onClick={() => preWeek(examWeeks.length)}>{"<<prev"}</span>
+                              <h4 style={{}}>Week {weekIndex + 1}/{examWeeks.length}</h4>
+                              <span onClick={() => nextWeek(examWeeks.length)}>{"next>>"}</span>
+                            </div>
                           </div>
+                          {/* <Button onClick={()=>{}} variant="contained">{"Save"}</Button> */}
                         </div>
-                        {/* <Button onClick={()=>{}} variant="contained">{"Save"}</Button> */}
-                      </div>
-                      <div style={{ width: "100%", display: "flex", background: '#f2f2f2', }}>
-                        <div style={{ display: "flex", flexDirection: "column", }}>
-                          {
-                            examDays.map((day, dayIndex) => (
-                              <div style={{ height: 170, display: "flex", alignItems: "center" }}>
-
-                                <div style={{ width: 150, background: '#f2f2f2', textAlign: "center" }}>
-                                  {day}
+                        <div style={{ width: "100%", display: "flex", background: '#f2f2f2', }}>
+                          <div style={{ display: "flex", flexDirection: "column", }}>
+                            {
+                              examDays.map((day, dayIndex) => (
+                                <div style={{ height: 170, display: "flex", alignItems: "center" }}>
+  
+                                  <div style={{ width: 150, background: '#f2f2f2', textAlign: "center" }}>
+                                    {day}
+                                  </div>
+  
+                                  <div style={{ display: "flex", flexDirection: "row" }}>
+                                    {week
+                                      .filter(exam => exam.day === day && exam.department.includes(dep||"") && exam.level.toString().includes(level||""))
+                                      .map((exam, examIndex) => (
+                                        <ExamCard key={examIndex} exam={exam} />
+                                      ))}
+                                  </div>
                                 </div>
-
-                                <div style={{ display: "flex", flexDirection: "row" }}>
-                                  {week
-                                    .filter(exam => exam.day === day && exam.department.includes(dep||"") && exam.level.toString().includes(level||""))
-                                    .map((exam, examIndex) => (
-                                      <ExamCard key={examIndex} exam={exam} />
-                                    ))}
-                                </div>
-                              </div>
-                            ))
-                          }
-
+                              ))
+                            }
+  
+                          </div>
+  
+  
+  
                         </div>
+                      </>
+  
+                    )
+                  }
+                </>
+  
+  
+  
+              ))}
+            </div>
+          )}
+  
+        </DashboardLayout>
+      </>
+  
+  
+    );
+  }else{
+    return (
+      <>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+  
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <DashboardLayout>
+  
+          {!examWeeks || examWeeks.length === 0 ? (
+            <>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
+  
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  value={fac}
+                  onChange={(e, w) => {
+                    setfac(w)
+  
+                  }
+                  }
+                  options={["", ...auth?.facultyAll?.map(obj => obj['name'])]}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Faculty" />}
+                />
+  
+                <Autocomplete
+                  disablePortal
+                  value={dep}
+                  onChange={(e, w) => {
+                    setdep(w)
+                   
+                  }}
+                  id="combo-box-demo"
+                  options={["", ...auth?.departmentAll.filter((dd) => dd['faculty']?.includes(fac)).map(obj => obj['department'])]}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Department" />}
+                />
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+  
+                  onChange={(e, w) => {
+                    console.log(dep, fac)
+                    setlevel(w)
+                  }
+                  }
+                  options={["", "100", "200", "300", "400", "500", "600"]}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Level" />}
+                />
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
+  
+                  <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
+                    <span onClick={() => preWeek(examWeeks.length)}>{"<<prev"}</span>
+                    <h4 style={{}}>Week {0}</h4>
+                    <span onClick={() => nextWeek(examWeeks.length)}>{"next>>"}</span>
+                  </div>
+                </div>
+                {/* <Button onClick={()=>{}} variant="contained">{"Save"}</Button> */}
+              </div>
+              <div>No Time Table Generated</div>
+            </>
+  
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {examWeeks?.map((week, weekIndex) => (
+  
+                <>
+  
+                  {
+                    weekIndex === weekINDEX && (
+                      <>
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
+  
+                         
+                          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
+  
+                            <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
+                              <span onClick={() => preWeek(examWeeks.length)}>{"<<prev"}</span>
+                              <h4 style={{}}>Week {weekIndex + 1}/{examWeeks.length}</h4>
+                              <span onClick={() => nextWeek(examWeeks.length)}>{"next>>"}</span>
+                            </div>
+                          </div>
+                          {/* <Button onClick={()=>{}} variant="contained">{"Save"}</Button> */}
+                        </div>
+                        <div style={{ width: "100%", display: "flex", background: '#f2f2f2', }}>
+                          <div style={{ display: "flex", flexDirection: "column", }}>
+                            {
+                              examDays.map((day, dayIndex) => (
+                                <div style={{ height: 170, display: "flex", alignItems: "center" }}>
+  
+                                  <div style={{ width: 150, background: '#f2f2f2', textAlign: "center" }}>
+                                    {day}
+                                  </div>
+  
+                                  <div style={{ display: "flex", flexDirection: "row" }}>
+                                    {week
+                                      .filter(exam => exam.day === day && exam.department.includes(auth.userData.depart) && exam.level.toString().includes(auth.userData.level))
+                                      .map((exam, examIndex) => (
+                                        <ExamCard key={examIndex} exam={exam} />
+                                      ))}
+                                  </div>
+                                </div>
+                              ))
+                            }
+  
+                          </div>
+  
+  
+  
+                        </div>
+                      </>
+  
+                    )
+                  }
+                </>
+  
+  
+  
+              ))}
+            </div>
+          )}
+  
+        </DashboardLayout>
+      </>
+  
+  
+    );
+  }
 
-
-
-                      </div>
-                    </>
-
-                  )
-                }
-              </>
-
-
-
-            ))}
-          </div>
-        )}
-
-      </DashboardLayout>
-    </>
-
-
-  );
+  
 
 }
 

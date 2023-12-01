@@ -38,7 +38,7 @@ const Page = () => {
               name={"Faculty"}
               positive
               sx={{ height: '100%' }}
-              value={auth.facultyAll.length}
+              value={auth.facultyAll?.length}
             />
             </Grid>
            <Grid
@@ -50,7 +50,7 @@ const Page = () => {
               name={"Department"}
               positive
               sx={{ hweight: '100%' }}
-              value={auth.departmentAll.length}
+              value={auth.departmentAll?.length}
             />
           </Grid>
             <Grid
@@ -74,7 +74,7 @@ const Page = () => {
               name={"venue"}
               positive
               sx={{ height: '100%' }}
-              value={auth.venueAll.length}
+              value={auth.venueAll?.length}
             />
           </Grid>
          

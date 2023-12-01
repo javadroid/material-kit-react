@@ -35,12 +35,22 @@ const router = useRouter();
     
     const getall = async () => {
       const sud = JSON.parse(await localStorage.getItem("userData"))
+
+      // console.log(first)
       if (!sud && !auth1.userData) {
         router.push('/auth/login');
         setload(true)
       }else{
-        setload(true)
+        if(sud.userData?.type===("Admin")){
+          router.push('/ViewETG');
+          setload(true)
+        }else{
+          setload(true)
+        }
+        
       }
+
+
     }
     getall()
 

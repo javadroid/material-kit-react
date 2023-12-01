@@ -16,13 +16,16 @@ import {
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
 import { items } from './config';
+import { items2 } from './config2';
 import { SideNavItem } from './side-nav-item';
-
+import { useAuth } from 'src/hooks/useAuth';
+// import {} from
 export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-
+  const auth =useAuth()
+  const sud = JSON.parse( localStorage.getItem("userData"))
   const content = (
     <Scrollbar
       sx={{
@@ -106,7 +109,11 @@ export const SideNav = (props) => {
               m: 0
             }}
           >
-            {items.map((item) => {
+
+{
+  sud.type==="Admin"?(
+    <>
+     {items.map((item) => {
               const active = item.path ? (pathname === item.path) : false;
 
               return (
@@ -121,6 +128,26 @@ export const SideNav = (props) => {
                 />
               );
             })}
+    </>
+  ):(<>
+   {items2.map((item) => {
+              const active = item.path ? (pathname === item.path) : false;
+
+              return (
+                <SideNavItem
+                  active={active}
+                  disabled={item.disabled}
+                  external={item.external}
+                  icon={item.icon}
+                  key={item.title}
+                  path={item.path}
+                  title={item.title}
+                />
+              );
+            })}
+  </>)
+}
+           
           </Stack>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />

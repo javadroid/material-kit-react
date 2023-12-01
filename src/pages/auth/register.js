@@ -15,12 +15,12 @@ const Page = () => {
   const auth = useAuth()
   const formik = useFormik({
     initialValues: {
-      matric: '',
-      name: '',
-      user: '',
-      password: '',
-      department: '',
-      level: '',
+      matric: 'admin',
+      name: 'admin',
+      user: 'admin',
+      password: 'admin',
+      department: 'admin',
+      level: 'admin',
       submit: null
     },
     validationSchema: Yup.object({
