@@ -378,13 +378,43 @@ const ExamCard = ({ exam }) => {
     marginBottom: '1px',
     fontSize: '12px',
   };
+  const  convertTo12HourFormat=(timeRange)=> {
+   
+    
+    
+      const [startTime, endTime] = timeRange.split(' - ');
+      const convertedStartTime = convertTo12Hour(startTime);
+      const convertedEndTime = convertTo12Hour(endTime);
+      return `${convertedStartTime} - ${convertedEndTime}`;
+    
+  
+  
+  }
+  
+  function convertTo12Hour(time) {
+    // const [hours, minutes] = time.split(':');
+    let period = 'AM';
+  
+    let convertedHours = parseInt(time, 10);
+    if (convertedHours >= 12) {
+      period = 'PM';
+      if (convertedHours > 12) {
+        convertedHours -= 12;
+      }
+    }
+  
+    return `${convertedHours.toString().padStart(2, '0')} ${period}`;
+  }
+  
+  
+ 
 
   return (
     <div style={cardStyle}>
       <h3 style={headingStyle}>{exam.course}</h3>
 
       <p style={detailStyle}>
-        <strong>Time:</strong> {exam.time}
+        <strong>Time:</strong> {convertTo12HourFormat(exam.time)}
       </p>
       <p style={detailStyle}>
         <strong>Room:</strong> {exam.room?.venueName}

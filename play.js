@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { addData, updateData } from 'src/service/Api';
 
@@ -45,45 +44,56 @@ export default function play(examRooms, exams, totalExamWeeks, lecturerSamples, 
 
 
   function generateCompleteScheduleWithLecturers(exams, examSchedule, lecturers) {
+    const levelsScheduled = {};
     exams.forEach(exam => {
       let scheduled = false;
-
-      while (!scheduled) {
+      const maxAttempts = 100;
+      let attempts=0
+      while (!scheduled&& attempts < maxAttempts) {
+        attempts++;
         // Randomly select a day and time for the exam
         const randomDay = examDays[Math.floor(Math.random() * examDays.length)];
         let randomTime = examSchedule[randomDay][Math.floor(Math.random() * examSchedule[randomDay].length)];
         randomTime = randomTime?.time ? randomTime?.time : randomTime;
 
-        exam.day = randomDay;
-        exam.time = randomTime;
+        if (!levelsScheduled[randomTime]) {
+          levelsScheduled[randomTime] = new Set();
+        }
+        if (!levelsScheduled[randomTime].has(exam.level)) {
+          exam.day = randomDay;
+          exam.time = randomTime;
+  // Assign 3-5 lecturers to the exam
+  const examLecturers = [];
+  const departmentLecturers = lecturers?.filter(lecturer => lecturer.department === exam.department);
+  const numLecturers = Math.floor(Math.random() * (5 - 3 + 1)) + 3; // Random number between 3 and 5
 
-        // Assign 3-5 lecturers to the exam
-        const examLecturers = [];
-        const departmentLecturers = lecturers?.filter(lecturer => lecturer.department === exam.department);
-        const numLecturers = Math.floor(Math.random() * (5 - 3 + 1)) + 3; // Random number between 3 and 5
-
-        for (let i = 0; i < lecturernumber; i++) {
-          let availableLecturers = departmentlecturers?.filter(lecturer =>
-            !examlecturers?.some(assignedLecturer => hasLecturerTimeConflict(assignedLecturer, lecturer))
-          );
-          // console.log(availableLecturers)
-          if (availablelecturers?.length > 0) {
-            const selectedLecturer = availableLecturers[Math.floor(Math.random() * availablelecturers?.length)];
-            examlecturers?.push(selectedLecturer);
-          } else {
-            // If no available lecturers, retry scheduling the exam
-            scheduled = false;
-            break;
+  for (let i = 0; i < lecturernumber; i++) {
+    let availableLecturers = departmentLecturers?.filter(lecturer =>
+      !examLecturers?.some(assignedLecturer => hasLecturerTimeConflict(assignedLecturer, lecturer))
+    );
+    // console.log(availableLecturers)
+    if (availableLecturers?.length > 0) {
+      const selectedLecturer = availableLecturers[Math.floor(Math.random() * availableLecturers?.length)];
+      examLecturers?.push(selectedLecturer);
+    } else {
+      // If no available lecturers, retry scheduling the exam
+      scheduled = false;
+      break;
+    }
+  }
+          // Update the exam schedule and check for conflicts
+          scheduled = updateExamSchedule(examSchedule, exam);
+  
+          // If scheduled, mark the level as scheduled for that time
+          if (scheduled) {
+             exam.lecturers = examLecturers;
+            levelsScheduled[randomTime].add(exam.level);
           }
         }
 
-        // Update the exam schedule and check for conflicts
-        scheduled = updateExamSchedule(examSchedule, exam);
+        
 
-        // If scheduled, assign the lecturers to the exam
-        if (scheduled) {
-          exam.lecturers = examLecturers;
-        }
+        
       }
     });
   }
@@ -166,7 +176,7 @@ qq++
           }
           examSchedule[exam.day].push({ course: exam.course, time: exam.time, room: exam.room });
         }
-        console.error('Error: Room assignment failed for exam:', exam);
+        // console.error('Error: Room assignment failed for exam:', exam);
         // You might want to set a default room or take other corrective actions
       }
     }
@@ -176,6 +186,7 @@ qq++
 
   // Step 6: Avoid Time Conflicts
   function hasTimeConflict(existingExam, newExam) {
+    // console.log(first)
     return existingExam.day === newExam.day && existingExam.time === newExam.time;
   }
 
@@ -197,24 +208,24 @@ qq++
   }
 
   // Create a function to generate the complete exam schedule
-  function generateCompleteSchedule(exams, examSchedule) {
-    exams.forEach(exam => {
-      let scheduled = false;
+  // function generateCompleteSchedule(exams, examSchedule) {
+  //   exams.forEach(exam => {
+  //     let scheduled = false;
 
-      while (!scheduled) {
-        // Randomly select a day and time for the exam
-        const randomDay = examDays[Math.floor(Math.random() * examDays.length)];
-        let randomTime = examSchedule[randomDay][Math.floor(Math.random() * examSchedule[randomDay].length)];
-        randomTime = randomTime?.time ? randomTime?.time : randomTime
+  //     while (!scheduled) {
+  //       // Randomly select a day and time for the exam
+  //       const randomDay = examDays[Math.floor(Math.random() * examDays.length)];
+  //       let randomTime = examSchedule[randomDay][Math.floor(Math.random() * examSchedule[randomDay].length)];
+  //       randomTime = randomTime?.time ? randomTime?.time : randomTime
 
-        exam.day = randomDay;
-        exam.time = randomTime;
+  //       exam.day = randomDay;
+  //       exam.time = randomTime;
 
-        // Update the exam schedule and check for conflicts
-        scheduled = updateExamSchedule(examSchedule, exam);
-      }
-    });
-  }
+  //       // Update the exam schedule and check for conflicts
+  //       scheduled = updateExamSchedule(examSchedule, exam);
+  //     }
+  //   });
+  // }
 
   // Generate the complete exam schedule
   // generateCompleteSchedule(exams, examSchedule);
@@ -274,7 +285,7 @@ qq++
       console.log(
         `| ${exam.course?.padEnd(10)} | ${exam.day?.padEnd(9)} | ${exam.time?.padEnd(14)} | ${exam.room?.venueName?.padEnd(
           10
-        )} | ${lecturerNames.padEnd(30)} |`
+        )} | ${lecturerNames?.padEnd(30)} |`
       );
     });
 
@@ -293,4 +304,3 @@ qq++
   console.log('---------------------------examWeeks--------------------------\n', examWeeks);
   addData("TimeTable", { examWeeks: JSON.stringify(examWeeks) }, handleCloseModal, setReload)
 }
-
