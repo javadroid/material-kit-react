@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Box, Autocomplete,CircularProgress,Backdrop, Container, TextField, Button, Stack, Typography, InputLabel } from '@mui/material';
+import { Box, Autocomplete, CircularProgress, Backdrop, Container, TextField, Button, Stack, Typography, InputLabel } from '@mui/material';
 import { SettingsNotifications } from 'src/sections/settings/settings-notifications';
 import { SettingsPassword } from 'src/sections/settings/settings-password';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
@@ -13,35 +13,35 @@ const Page = () => {
   const [dep, setdep] = useState()
   const [loading, setloading] = useState(false)
   const [fac, setfac] = useState()
-  const [semester, setsemester] = useState(2)
+  const [semester, setsemester] = useState(1)
   const [courseAll, setcourseAll] = useState(auth.courseAll)
   const [main, setmain] = useState(auth.courseAll)
   const [level, setLevel] = useState()
-  const [invigilator, setinvigilator] = useState(2)
+  const [invigilator, setinvigilator] = useState(0)
   const [weeks, setweeks] = useState(1)
   const [buttonText, setbuttonText] = useState("Generate General Exam Timetable")
 
   const router = useRouter();
   useEffect(() => {
-   
+
     console.log("first", auth.courseAll)
   }, [])
 
   const handleGenerate = () => {
     setloading(true)
     let nC = auth.courseAll
-    let Venue=auth.venueAll
-    let Lct=auth.userAll.filter((usr)=>usr.type==='Lecturer')
+    let Venue = auth.venueAll
+    let Lct = auth.userAll?.filter((usr) => usr.type === 'Lecturer')
     Venue.map((d, i) => {
 
-      d.venueName=d.venue
-      d.venueCode=d.code
+      d.venueName = d.venue
+      d.venueCode = d.code
     })
 
-    Lct.map((d, i) => {
+    Lct?.map((d, i) => {
 
-      d.department=d.depart
-      d.lecturerName=d.fullname
+      d.department = d.depart
+      d.lecturerName = d.fullname
     })
     nC.map((d, i) => {
       d.faculty = d.falcuty
@@ -53,7 +53,7 @@ const Page = () => {
     })
     let newCourse
 
-  
+
 
     if (fac && !dep) {
       newCourse = nC.filter(data =>
@@ -78,24 +78,37 @@ const Page = () => {
     } else {
       console.log("newCoursedsfd")
       newCourse = newCourse = nC
-      .filter(data => data.semester?.includes(semester))
+        .filter(data => data.semester?.includes(semester))
     }
-
     
+    let Venue1=Venue
+
+    Venue1.map((d,i)=>{
+      d.venueCode=d.venueCode+i.toString()
+
+    })
+    let Venue2=Venue1
+
+    Venue2.map((d,i)=>{
+      d.venueCode=d.venueCode+i.toString()
+
+    })
+    let Venue1111=[...Venue,...Venue1,...Venue2]
+
     // console.log("newCourse", Venue,newCourse,weeks,Lct,invigilator)
-    setTimeout(()=>{
+    setTimeout(() => {
       setloading(false)
-      play(Venue,newCourse,weeks,Lct,invigilator,auth?.setexamWeeksAll)
+      play(Venue1111, newCourse, weeks, Lct, invigilator, auth?.setexamWeeksAll)
       router.push('/ViewETG');
       // window.location.href="/"
-    },5000)
-    
+    }, 5000)
+
 
   }
 
   return (
     <>
-    <Backdrop
+      <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
 
@@ -139,10 +152,11 @@ const Page = () => {
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Semester" />}
               /><br />
-              <InputLabel    >Numbers of invigilator per exam</InputLabel>
+               <InputLabel    >Numbers of invigilator per exam</InputLabel>
               <TextField value={invigilator} onChange={(e) => setinvigilator(e.target.value)} />
               <br />
               <br />
+              {/*
               <InputLabel    >Generate for a facullty {"(optional)"}</InputLabel>
 
               <Autocomplete
@@ -187,8 +201,8 @@ const Page = () => {
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Department" />}
               />
-              <br />
-              <InputLabel    >Generate for a level {"(optional)"}</InputLabel>
+              <br /> */}
+              {/* <InputLabel    >Generate for a level {"(optional)"}</InputLabel>
 
               <Autocomplete
                 disablePortal
@@ -198,22 +212,14 @@ const Page = () => {
                   console.log(dep, fac)
                   setLevel(w)
                   if (w) {
-                    if (fac && !dep) {
-                      setbuttonText("Generate for faculty of " + fac + " " + w + " level")
-                    } else if (dep) {
-                      setbuttonText("Generate for " + dep + " " + w + " level")
-                    } else {
+                  
                       setbuttonText("Generate for " + w + " level")
-                    }
+                    
 
                   } else {
-                    if (fac && !dep) {
-                      setbuttonText("Generate for faculty of " + fac)
-                    } else if (dep) {
-                      setbuttonText("Generate for " + dep)
-                    } else {
+                    
                       setbuttonText("Generate for " + w + " level")
-                    }
+                    
                   }
                 }
                 }
@@ -221,7 +227,7 @@ const Page = () => {
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Level" />}
               />
-              <br />
+              <br /> */}
 
 
               <Button onClick={handleGenerate} variant="contained">{buttonText}</Button>

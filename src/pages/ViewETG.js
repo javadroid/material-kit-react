@@ -387,10 +387,10 @@ const ExamCard = ({ exam }) => {
         <strong>Time:</strong> {exam.time}
       </p>
       <p style={detailStyle}>
-        <strong>Room:</strong> {exam.room.venueName}
+        <strong>Room:</strong> {exam.room?.venueName}
       </p>
       <p style={detailStyle}>
-        <strong>Invigilators:</strong> {exam.lecturers.map(lecturer => lecturer.lecturerName).join(', ')}
+        <strong>Invigilators:</strong> {exam?.lecturers?.map(lecturer => lecturer.lecturerName).join(', ')}
       </p>
     </div>
   );

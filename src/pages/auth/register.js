@@ -8,6 +8,7 @@ import { Autocomplete, Box, Button, Link, Stack, TextField, Typography } from '@
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 import { signup } from 'src/service/Api';
 import { useAuth } from 'src/hooks/useAuth';
+import { useEffect } from 'react';
 
 
 const Page = () => {
@@ -15,12 +16,12 @@ const Page = () => {
   const auth = useAuth()
   const formik = useFormik({
     initialValues: {
-      matric: 'admin',
-      name: 'admin',
-      user: 'admin',
-      password: 'admin',
-      department: 'admin',
-      level: 'admin',
+      matric: '',
+      name: '',
+      user: '',
+      password: '',
+      department: '',
+      level: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -60,6 +61,9 @@ const Page = () => {
       }
     }
   });
+useEffect(() => {
+  console.log("testing",auth.departmentAll)
+}, [auth.departmentAll])
 
   return (
     <>
