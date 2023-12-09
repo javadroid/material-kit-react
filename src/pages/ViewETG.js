@@ -57,7 +57,7 @@ export default function ViewETG() {
     const printableContent = printableDivRef2.current;
 
     if (printableContent) {
-      setshowall(true)
+       setshowall(true)
       const printWindow = window.open('', '_blank');
       printWindow.document.write('<html><head><title>Print</title></head><body>');
       printWindow.document.write(printableContent.innerHTML);
@@ -68,23 +68,23 @@ export default function ViewETG() {
        // Print and close the new window
        
       //  printWindow.close();
-       setshowall(false)
+        setshowall(false)
        // Hide the div again
       //  printableContent.style.display = 'none';
     }
   };
 
-  const handlePrint1 = () => {
+  const handlePrint1 = async() => {
     const printableContent = printableDivRef.current;
 
     if (printableContent) {
-      setshowall(true)
+      await setshowall(true)
       const printWindow = window.open('', '_blank');
       printWindow.document.write('<html><head><title>Print</title></head><body>');
       printWindow.document.write(printableContent.innerHTML);
       printWindow.document.write('</body></html>');
       printWindow.document.close();
-      printWindow.print();
+      await  printWindow.print();
 
       // printWindow.close();
       setshowall(false)

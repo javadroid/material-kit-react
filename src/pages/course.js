@@ -42,9 +42,29 @@ const Page = () => {
     console.log(data)
   };
   const handleOpenModal1 = (data) => {
+    const inputIds = ['code', 'name', 'unit', 'student', 'department', 'status', 'semester', 'level'];
+
+    // Clear the values of the input fields
+    inputIds.forEach(id => {
+      const ss=  document.getElementById(id);
+      if(ss){
+        ss.value=''
+      }
+    });
     setAData(data)
     values=null
-    setValues(data)
+    setValues({
+      code: '',
+      name: '',
+      unit: '',
+      student: '',
+      faculty: '',
+      department: '',
+      status: '',
+      semester: '',
+      level: '',
+    });
+
     setOpenModal1(true)
     console.log(data)
   };
@@ -349,6 +369,7 @@ const Page = () => {
 
               >
                 <TextField
+                id='code'
                   fullWidth
                   label="Code"
                   name="code"
@@ -358,6 +379,7 @@ const Page = () => {
                 />
                 <TextField
                   fullWidth
+                  id='name'
                   label="Name"
                   name="name"
                   onChange={handleChange}
@@ -367,6 +389,7 @@ const Page = () => {
                 <TextField
                   fullWidth
                   label="Unit"
+                  id='unit'
                   name="unit"
                   type='number'
                   onChange={handleChange}
@@ -377,6 +400,7 @@ const Page = () => {
                   fullWidth
                   label="Nunber of students"
                   name="student"
+                  id='student'
                   type='number'
                   onChange={handleChange}
                   required
@@ -386,6 +410,7 @@ const Page = () => {
                   fullWidth
                   label="Department"
                   name="eman"
+                  id='eman'
                   onChange={(e) => {
                     const aas = JSON.parse(e.target.value)
                       const vs={...values}
@@ -423,6 +448,7 @@ const Page = () => {
                   fullWidth
                   label="status"
                   name="status"
+                  id='status'
                   onChange={handleChange}
                   required
                   select
@@ -443,6 +469,7 @@ const Page = () => {
                   fullWidth
                   label="Semester"
                   name="semester"
+                  id='semester'
                   onChange={handleChange}
                   required
                   select
@@ -463,6 +490,7 @@ const Page = () => {
                   fullWidth
                   label="Level"
                   name="level"
+                  id='level'
                   onChange={handleChange}
                   required
                   select
