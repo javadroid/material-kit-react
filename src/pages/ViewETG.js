@@ -403,7 +403,7 @@ const ExamCard = ({ exam }) => {
       }
     }
   
-    return `${convertedHours.toString().padStart(2, '0')} ${period}`;
+    return `${convertedHours.toString().padStart(2, '0'):'00'} ${period}`;
   }
   
   
@@ -417,7 +417,7 @@ const ExamCard = ({ exam }) => {
         <strong>Time:</strong> {convertTo12HourFormat(exam.time)}
       </p>
       <p style={detailStyle}>
-        <strong>Room:</strong> {exam.room?.venueName}
+        <strong>Room:</strong> {exam.room?.venueCode}
       </p>
       <p style={detailStyle}>
         <strong>Invigilators:</strong> {exam?.lecturers?.map(lecturer => lecturer.lecturerName).join(', ')}
