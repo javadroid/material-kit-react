@@ -403,7 +403,7 @@ const ExamCard = ({ exam }) => {
       }
     }
   
-    return `${convertedHours.toString().padStart(2, '0'):'00'} ${period}`;
+    return `${convertedHours.toString().padStart(2, '0')}':00' ${period}`;
   }
   
   
