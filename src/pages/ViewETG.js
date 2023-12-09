@@ -1,5 +1,5 @@
 import play from 'play'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Autocomplete, Button, Card, InputAdornment, OutlinedInput, SvgIcon, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { useAuth } from 'src/hooks/useAuth';
@@ -48,6 +48,35 @@ export default function ViewETG() {
     if (weekINDEX > 0)
       setweekINDEX(weekINDEX - 1)
   }
+
+
+  const printableDivRef = useRef(null);
+  const printableDivRef2 = useRef(null);
+  const handlePrint = () => {
+    const printableContent = printableDivRef2.current;
+
+    if (printableContent) {
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write('<html><head><title>Print</title></head><body>');
+      printWindow.document.write(printableContent.innerHTML);
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
+  const handlePrint1 = () => {
+    const printableContent = printableDivRef.current;
+
+    if (printableContent) {
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write('<html><head><title>Print</title></head><body>');
+      printWindow.document.write(printableContent.innerHTML);
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
   if(sud?.type==="Admin"){
     return (
       <>
@@ -117,7 +146,7 @@ export default function ViewETG() {
             </>
   
           ) : (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div  ref={printableDivRef2} style={{ display: "flex", flexDirection: "column" }}>
               {examWeeks?.map((week, weekIndex) => (
   
                 <>
@@ -166,6 +195,8 @@ export default function ViewETG() {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Level" />}
                           />
+
+                          <Button  title='Print' onClick={handlePrint}>Print</Button>
                           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
   
                             <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
@@ -288,7 +319,7 @@ export default function ViewETG() {
             </>
   
           ) : (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div  ref={printableDivRef} style={{ display: "flex", flexDirection: "column" }}>
               {examWeeks?.map((week, weekIndex) => (
   
                 <>
@@ -298,7 +329,7 @@ export default function ViewETG() {
                       <>
                         <div key={weekINDEX} style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", }}>
   
-                         
+                        <Button  title='Print' onClick={handlePrint1}>Print</Button>
                           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "50%" }}>
   
                             <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "50%" }}>
@@ -403,7 +434,7 @@ const ExamCard = ({ exam }) => {
       }
     }
   
-    return `${convertedHours.toString().padStart(2, '0')}':00' ${period}`;
+    return `${convertedHours.toString().padStart(2, '0')}:00 ${period}`;
   }
   
   
